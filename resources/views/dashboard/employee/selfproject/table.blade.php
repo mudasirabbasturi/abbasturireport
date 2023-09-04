@@ -1,0 +1,24 @@
+<table class="table table-hover m-b-0 c_list" id="project_table" style="width:100%">
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>Project_Address</th>
+            <th>Title</th>
+            <th>Due_Date</th>
+            <th>Main_Scope</th>
+            <th>Time_Indicator</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Status</th>
+            <th>Project_Address</th>
+            <th>Title</th>
+            <th>Due_Date</th>
+            <th>Main_Scope</th>
+            <th>Time_Indicator</th>
+            <th>Action</th>
+        </tr>
+    </tfoot>
+    <tbody>
