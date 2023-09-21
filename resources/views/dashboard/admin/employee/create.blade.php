@@ -47,22 +47,24 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <p class="mb-2"><b>Full Name:</b></p>
-                                    <input type="text" class="form-control" placeholder="Enter Full Name"
-                                        name="full_name" required>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           placeholder="Enter Full Name"
+                                           name="full_name" required>
                                 </div>
                                 <div class="col-md-6">
                                     <p class="mb-2"><b>Father Full Name:</b></p>
-                                    <input type="text" class="form-control" placeholder="Enter Father Full Name"
-                                        name="father_name" required>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           placeholder="Enter Father Full Name"
+                                           name="father_name">
                                 </div>
                             </div>
                             <hr>
                             <div class="row">
                                 <div class="col-md-6">
                                     <p class="mb-2"><b>Phone Number:</b></p>
-
-                                    <input type="tel" class="form-control" name="phone_number" placeholder="123-45-678"
-                                        required>
+                                    <input type="tel" class="form-control" name="phone_number" placeholder="123-45-678">
                                 </div>
                                 <div class="col-md-6">
                                     <p class="mb-2"><b>Reference Number:</b></p>
@@ -74,26 +76,24 @@
                                 <div class="col-md-6">
                                     <p class="mb-2"><b>Email:</b></p>
 
-                                    <input type="email" class="form-control" placeholder="Enter Email" name="email"
-                                        required>
+                                    <input type="email" class="form-control" placeholder="Enter Email" name="email" required>
                                 </div>
                                 <div class="col-md-6">
                                     <p class="mb-2"><b>Password:</b></p>
-                                    <input type="password" class="form-control" placeholder="123456" name="password"
-                                        required>
+                                    <input type="password" class="form-control" placeholder="123456" name="password" required>
                                 </div>
                             </div>
                             <hr>
                             <div class="row">
                                 <div class="col-md-6">
                                     <p class="mb-2"><b>Country:</b></p>
-                                    <select class="custom-select" name="country" required>
+                                    <select class="custom-select" name="country">
                                         <option value="Pakistan" selected>Pakistan</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6">
                                     <p class="mb-2"><b>State:</b></p>
-                                    <select class="custom-select" name="state" required>
+                                    <select class="custom-select" name="state">
                                         <option value="Punjab" selected>Punjab</option>
                                         <option value="Sindh">Sindh</option>
                                         <option value="Khyber Pakhtunkhwa">Khyber Pakhtunkhwa</option>
@@ -105,27 +105,29 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <p class="mb-2"><b>City:</b></p>
-                                    <input type="text" class="form-control" placeholder="Enter City" name="city"
-                                        required>
+                                    <input type="text" class="form-control" placeholder="Enter City" name="city">
                                 </div>
                                 <div class="col-md-6">
                                     <p class="mb-2"><b>Perminant Address:</b></p>
-                                    <input type="text" class="form-control" placeholder="Enter Perminant Address"
-                                        name="permanent_address" required>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           placeholder="Enter Perminant Address"
+                                           name="permanent_address">
                                 </div>
                             </div>
                             <hr>
                             <div class="row">
                                 <div class="col-md-6">
                                     <p class="mb-2"><b>Current Address:</b></p>
-                                    <input type="text" class="form-control" placeholder="Enter Current Address If Have"
-                                        name="current_address">
+                                    <input type="text" 
+                                           class="form-control" 
+                                           placeholder="Enter Current Address If Have"
+                                           name="current_address">
                                 </div>
                                 <div class="col-md-6">
                                     <p class="mb-2"><b>ID Card:</b></p>
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="id_card" name="id_card"
-                                            required>
+                                        <input type="file" class="custom-file-input" id="id_card" name="id_card">
                                         <label class="custom-file-label" for="id_card">Choose Id Card</label>
                                     </div>
                                 </div>
@@ -142,11 +144,18 @@
                                 <div class="col-md-6">
                                     <p class="mb-2"><b>Picture:</b></p>
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="picture" name="profile_picture"
-                                            required>
+                                        <input type="file" class="custom-file-input" id="picture" name="profile_picture">
                                         <label class="custom-file-label" for="picture">Choose Picture</label>
                                     </div>
-                                    <input type="hidden" value="0" name="type" required>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="mb-2"><b>Joining Date:</b></p>
+                                    <input type="date" 
+                                           class="form-control"
+                                           name="joining_date">
                                 </div>
                             </div>
                             <hr>

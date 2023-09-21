@@ -1,0 +1,22 @@
+<table id="myTable1" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>Project_Address</th>
+            <th>Due_Date</th>
+            <th>Main_Scope</th>
+            <th>Time_Indicator</th>
+            <th>Team</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Project_Address</th>
+            <th>Dute_Date</th>
+            <th>Main_Scope</th>
+            <th>Time_Indicator</th>
+            <th>Team</th>
+            <th>Action</th>
+        </tr>
+    </tfoot>
+    <tbody>

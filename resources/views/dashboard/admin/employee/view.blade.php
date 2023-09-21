@@ -201,6 +201,15 @@ p {
                                                            name="current_address">
                                                 </div>
                                             </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                                <div class="form-group">
+                                                    <label for="">Joining Date:</label>                                             
+                                                    <input type="date" 
+                                                           class="form-control" 
+                                                           value="{{ $user->joining_date }}"
+                                                           name="joining_date">
+                                                </div>
+                                            </div>
                                             <div class="col-12 mt-1">
                                                 <input type="submit" class="btn btn-sm btn-dark" value="Update.">
                                             </div>

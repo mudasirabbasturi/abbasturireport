@@ -12,7 +12,7 @@
     @yield('styles')
 </head>
 
-<body class="theme-cyan">
+<body class="theme-cyan layout-fullwidth">
     <!-- Page Loader -->
     <div class="page-loader-wrapper">
         <div class="loader">

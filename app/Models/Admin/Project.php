@@ -5,11 +5,13 @@ namespace App\Models\Admin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Employee\Action;
+use Illuminate\Notifications\Notifiable;
+
+
 
 class Project extends Model
 {
-    use HasFactory;
-
+    use HasFactory, Notifiable;
     protected $fillable = [
         'project_title',
         'project_address',

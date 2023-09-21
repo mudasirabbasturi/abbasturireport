@@ -1,14 +1,25 @@
-<script src="{{ asset('assets/bundles/libscripts.bundle.js') }}"></script>
+{{-- <script src="{{ asset('assets/bundles/libscripts.bundle.js') }}"></script>
 <script src="{{ asset('assets/bundles/vendorscripts.bundle.js') }}"></script>
 <script src="{{ asset('assets/bundles/mainscripts.bundle.js') }}"></script>
 <script src="{{ asset('assets/js/pages/ui/dialogs.js') }}"></script>
+
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script> --}}
+
+<script src="{{ asset('assets/bundles/libscripts.bundle.js') }}"></script>
+<script src="{{ asset('assets/bundles/vendorscripts.bundle.js') }}"></script>
+<script src="{{ asset('assets/vendor/select2/select2.min.js') }}"></script>
+<script src="{{ asset('assets/bundles/mainscripts.bundle.js') }}"></script>
+<script src="{{ asset('assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+
 <script>
 
 $(document).ready(function () {
     var table = $('#project_table').DataTable({
         order: [[1, 'desc']], // Assuming the first column is the date column
-});
+    });
 
     // Run the time indicator code for the current page
     updateAllTimeIndicators(table);
@@ -164,57 +175,135 @@ $(document).ready(function () {
         const text = ele.textContent;
 
         // If the length of the text is greater than 25
-        if (text.length > 25) {
+        if (text.length > 150) {
             ele.style.cursor = "zoom-in"
             // Show only the first 25 characters followed by '...'
-            ele.textContent = text.substr(0, 25) + '...';
+            ele.textContent = text.substr(0, 150) + '...';
 
             // Add a click event listener to toggle the full text
             ele.addEventListener('click', function () {
                 if (ele.textContent === text) {
-                    ele.textContent = text.substr(0, 25) + '...';
+                    ele.textContent = text.substr(0, 150) + '...';
                 } else {
                     ele.textContent = text;
                 }
             });
         }
     }
-    const copyLink = document.getElementById('copyLink');
+    // const copyLink = document.getElementById('copyLink');
         
-        copyLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            const url = this.getAttribute('data-url');
+    //     copyLink.addEventListener('click', function(event) {
+    //         event.preventDefault();
+    //         const url = this.getAttribute('data-url');
             
-            navigator.clipboard.writeText(url)
-                .then(() => {
-                    // URL copied successfully
-                    // You can add any additional handling here
-                    console.log('URL copied to clipboard:', url);
-                })
-                .catch((error) => {
-                    // Failed to copy URL
-                    // You can add any error handling here
-                    console.error('Error copying URL to clipboard:', error);
-                });
-        });
+    //         navigator.clipboard.writeText(url)
+    //             .then(() => {
+    //                 console.log('URL copied to clipboard:', url);
+    //             })
+    //             .catch((error) => {
+    //                 console.error('Error copying URL to clipboard:', error);
+    //             });
+    //     });
 
-</script>
+    ClassicEditor
+        .create( document.querySelector( '#editor_mainScopes' ) )
+        .catch( error => {
+            console.error( error );
+    } );
 
-{{-- <script>
-
-    const buttons = document.querySelectorAll('.btn-filter');
-  
-    buttons.forEach(button => {
-      button.addEventListener('click', function() {
-        const dataTarget = this.getAttribute('data-target');
-        const searchInput = document.querySelector('.dataTables_filter input');
-        searchInput.value = dataTarget;
-        searchInput.focus();
-        const event = new Event('keyup');
-        searchInput.dispatchEvent(event);
-        table.column(0).search(dataTarget, true, false).draw();
-      });
+    ClassicEditor
+        .create(document.querySelector('#editor_attachNotes'))
+        .catch(error => {
+            console.error(error);
     });
 
+    const editor = ClassicEditor
+        .create(document.querySelector('#project_client_notes'))
+        .catch(error => {
+            console.error(error);
+});
 
-</script> --}}
+var amtBudgetEle = document.getElementById('amount_budget');
+    var deductionEle = document.getElementById('deduction');
+    var totalPricetEle = document.getElementById('total_price');
+    var currencyEle = document.getElementById('currency');
+
+    var amount = amtBudgetEle.value;
+    var deduction = deductionEle.value;
+    var currency = currencyEle.value;
+
+    amtBudgetEle.addEventListener('keyup', function() {
+        amount = parseFloat(this.value);
+        if(isNaN(amount) || !this.value) {
+            totalPricetEle.value = '';
+        } else {
+            var totalPrice = amount - (amount * deduction / 100);
+            totalPricetEle.value = currency + totalPrice;
+        }
+    });
+
+    currencyEle.addEventListener('change', function(){
+        currency = this.value;
+        if(isNaN(amount)) {
+            totalPricetEle.value = '';
+        } else {
+            var totalPrice = amount - (amount * deduction / 100);
+            totalPricetEle.value = currency + totalPrice;
+        }
+    });
+
+    deductionEle.addEventListener('keyup', function(){
+        deduction = this.value;
+        if(isNaN(amount)) {
+            totalPricetEle.value = '';
+        } else {
+            var totalPrice = amount;
+            if (deduction) {
+                totalPrice -= amount * deduction / 100;
+            }
+            totalPricetEle.value = currency + totalPrice;
+        }
+    });
+
+    function clientsFunction(e) {
+        const id = e.value;
+        if (e.value === "") {
+            $("#clientNotes").fadeOut("slow");
+            $("#project_client_name").val("");
+            editor.then(newEditor => {
+                        newEditor.setData("");
+                    }).catch(error => {
+                        console.error(error);
+            });
+
+        } else {
+            $("#clientNotes").hide().fadeIn("slow");
+            const url = "{{ route('clients.data', ':id') }}".replace(':id', id);
+            $.ajax({
+                url: url,
+                type: "GET",
+                dataType: "json",
+                success: function(response) {
+                    const clientNotes = response.client_notes;
+                    const clientName = response.client_name;
+                    $("#project_client_name").val(clientName);
+                    editor.then(newEditor => {
+                        newEditor.setData(clientNotes);
+                    }).catch(error => {
+                        console.error(error);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+    }
+
+</script>
+<script>
+    $("#selectUser").select2();
+    $("#selectUserStatus").select2();
+</script>
+
+

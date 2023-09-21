@@ -23,6 +23,7 @@ use App\Http\Controllers\FullCalenderController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Auth::routes();
 // Deny access to register and forgot password routes
 Route::middleware('guest')->group(function () {
@@ -66,8 +67,7 @@ Route::middleware(['auth', 'user-access:employee'])->group(function () {
     Route::get('/employee/calender', [FullCalenderController::class, 'employeeCalenderIndex'])->name('employee.calender');
    
     Route::get('/employee/project/{project}', [EmployeeHomeController::class, 'projectShow'])->name('projectShow.show');
-    
-    Route::redirect('/type/project/{project}','/employee/project/{project}', 301);
+    // Route::redirect('/type/project/{project}','/employee/project/{project}', 301);
     
     Route::get('/employee/project', [EmployeeHomeController::class, 'employeeProjectIndex'])->name('employeeProjectIndex');
     Route::post('/employee/project/{id}', [EmployeeHomeController::class, 'projectUpdate'])->name('projectUpdate.store');
@@ -148,7 +148,8 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     // Project Routes.
 
     Route::resource('/admin/project', ProjectController::class);
-    Route::redirect('/type/project/{project}','/admin/project/{project}');
+    // Route::redirect('/type/project/{project}','/admin/project/{project}');
+    
     Route::get('/admin/clients/{id}', [ProjectController::class, 'clients'])->name('clients.data');
     
     Route::post('/admin/project/{id}', [ProjectController::class, "UpdateProjectStatus"])->name('adminActionStatus.update');
@@ -191,3 +192,5 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/api/projects/count', [NotificationController::class, 'GetProjectsCount'])->name('admin.projects.count');
 
 });
+
+// https://cpanel-b14.web-hosting.com/

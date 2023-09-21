@@ -35,7 +35,8 @@ class User extends Authenticatable
         'current_address', 
         'id_card', 
         'document',
-        'profile_picture', 
+        'profile_picture',
+        'joining_date',
         'type'
     ];
 

@@ -8,6 +8,7 @@ use App\Models\Admin\Project;
 use App\Models\NotificationLog;
 use App\Models\UserNotification;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 use Auth;
 
@@ -59,6 +60,8 @@ class AppServiceProvider extends ServiceProvider
 
               // Get All Users 
               'AllUsers' => 0,
+              'clients' => 0,
+              'users' => 0,
 
           ];
       
@@ -76,6 +79,9 @@ class AppServiceProvider extends ServiceProvider
               $defaultValues['ProjectRevisionCount'] = Project::where('project_status', 'revision')->count();
               $defaultValues['ProjectDeliverCount'] = Project::where('project_status', 'deliver')->count();
               $defaultValues['AllUsers'] = User::where('type', '!=', 1)->get();
+              $defaultValues['clients'] = DB::table('clients')->get();
+              $defaultValues['users'] = User::where('type', 0)->get();
+
       
               // Self Project Count.
               $defaultValues['SelfProjectCount'] = Project::whereHas('actions', function ($query) use ($user) {

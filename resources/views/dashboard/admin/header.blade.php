@@ -44,14 +44,17 @@
                     </a>
                 </div>
             </span>
-            <a href="{{ route('admin.current.progress') }}" class="btn l-amber btn-sm" style="position: relative;">
+            <a href="javascrip:void();" class="btn l-amber btn-sm" data-toggle="modal" data-target="#addProjectModal">
+                <small class="text-secondary"><b>Add Project. </b></small>
+            </a>
+            {{-- <a href="{{ route('admin.current.progress') }}" class="btn l-amber btn-sm" style="position: relative;">
                 <small class="text-secondary">
                     <b>Current Progress 
                     </b>
                     <span class="badge badge-danger">{{ $ProjectCurrentCount }}</span>
                 </small>
-            </a>
-            <div id="navbar-menu">
+            </a> --}}
+            {{-- <div id="navbar-menu">
                 <ul class="nav navbar-nav">
                     <li>
                         <a href="{{ route('admin.calender') }}" 
@@ -117,31 +120,31 @@
                         </form>
                     </li>
                 </ul>
-            </div>
+            </div> --}}
         </div>
     </div>
 </nav>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  function updateNotificationCount() {
-    var xhr = new XMLHttpRequest()
-    var URL = "{{ route('admin.notifications.count') }}"
-    xhr.open('GET', URL, true)
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-        var response = JSON.parse(xhr.responseText)
-        document.getElementById('header-notification-count-new').textContent = response.countNew
-        document.getElementById('header-notification-count-new-sub').textContent = response.countNew
-        document.getElementById('header-notification-count-new-tome').textContent = response.countNewToMe
-        document.getElementById('header-notification-count-new-tome-sub').textContent = response.countNewToMe
-      }
-    };
-    xhr.send();
-  }
+// document.addEventListener('DOMContentLoaded', function() {
+//   function updateNotificationCount() {
+//     var xhr = new XMLHttpRequest()
+//     var URL = "{{ route('admin.notifications.count') }}"
+//     xhr.open('GET', URL, true)
+//     xhr.onreadystatechange = function() {
+//       if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+//         var response = JSON.parse(xhr.responseText)
+//         document.getElementById('header-notification-count-new').textContent = response.countNew
+//         document.getElementById('header-notification-count-new-sub').textContent = response.countNew
+//         document.getElementById('header-notification-count-new-tome').textContent = response.countNewToMe
+//         document.getElementById('header-notification-count-new-tome-sub').textContent = response.countNewToMe
+//       }
+//     };
+//     xhr.send();
+//   }
 
-  updateNotificationCount();
-  setInterval(updateNotificationCount, 5000);
-});
+//   updateNotificationCount();
+//   setInterval(updateNotificationCount, 5000);
+// });
     
 </script>

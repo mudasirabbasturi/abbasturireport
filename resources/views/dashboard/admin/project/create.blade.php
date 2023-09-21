@@ -4,6 +4,7 @@
 
 <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/vendor/font-awesome/css/font-awesome.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/color_skins.css') }}">
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -112,6 +113,16 @@
                                            placeholder="Enter Project Url eg. http://127.0.0.1:8000/admin/project/create" 
                                            name="project_onside_link">
                                 </div>
+                                <div class="col-md-6">
+                                    <p class="mb-2"><b>Select User:</b></p>
+                                    <select class="form-control show-tick ms select2" multiple data-placeholder="Notify Users." id="selectUser" name="selected_users[]">
+                                        
+                                        @foreach ($users as $user)
+                                            <option value="{{ $user->id }}"> {{ $user->full_name }} </option>
+                                        @endforeach
+
+                                    </select>
+                                </div>
                                 <div class="col-md-6 mb-3">
                                     <p class="mb-2"><b>Project Due Date:</b></p>
                                     <div class="input-group">
@@ -123,21 +134,23 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <p class="mb-2"><b>Project Pricing:</b></p>
-                                    <div class="form-check-inline">
-                                        <label class="form-check-label">
-                                            <input type="radio" 
-                                                   class="form-check-input"
-                                                   name="project_pricing" 
-                                                   value="yes">Yes
-                                        </label>
+                                    <div class="border p-2">
+                                        <div class="form-check-inline">
+                                            <label class="form-check-label">
+                                                <input type="radio" 
+                                                       class="form-check-input"
+                                                       name="project_pricing" 
+                                                       value="yes">Yes
+                                            </label>
                                         </div>
-                                    <div class="form-check-inline">
-                                        <label class="form-check-label">
-                                            <input type="radio" 
-                                                   class="form-check-input" 
-                                                   name="project_pricing" 
-                                                   value="no" checked>No
-                                        </label>
+                                        <div class="form-check-inline">
+                                            <label class="form-check-label">
+                                                <input type="radio" 
+                                                       class="form-check-input" 
+                                                       name="project_pricing" 
+                                                       value="no" checked>No
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -158,6 +171,7 @@
 
 <script src="{{ asset('assets/bundles/libscripts.bundle.js') }}"></script>
 <script src="{{ asset('assets/bundles/vendorscripts.bundle.js') }}"></script>
+<script src="{{ asset('assets/vendor/select2/select2.min.js') }}"></script>
 <script src="{{ asset('assets/bundles/mainscripts.bundle.js') }}"></script>
 <script src="{{ asset('assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
@@ -185,47 +199,47 @@
             console.error(error);
     });
     
-    var amtBudgetEle = document.getElementById('amount_budget');
-    var deductionEle = document.getElementById('deduction');
-    var totalPricetEle = document.getElementById('total_price');
-    var currencyEle = document.getElementById('currency');
+    // var amtBudgetEle = document.getElementById('amount_budget');
+    // var deductionEle = document.getElementById('deduction');
+    // var totalPricetEle = document.getElementById('total_price');
+    // var currencyEle = document.getElementById('currency');
 
-    var amount = amtBudgetEle.value;
-    var deduction = deductionEle.value;
-    var currency = currencyEle.value;
+    // var amount = amtBudgetEle.value;
+    // var deduction = deductionEle.value;
+    // var currency = currencyEle.value;
 
-    amtBudgetEle.addEventListener('keyup', function() {
-        amount = parseFloat(this.value);
-        if(isNaN(amount) || !this.value) {
-            totalPricetEle.value = '';
-        } else {
-            var totalPrice = amount - (amount * deduction / 100);
-            totalPricetEle.value = currency + totalPrice;
-        }
-    });
+    // amtBudgetEle.addEventListener('keyup', function() {
+    //     amount = parseFloat(this.value);
+    //     if(isNaN(amount) || !this.value) {
+    //         totalPricetEle.value = '';
+    //     } else {
+    //         var totalPrice = amount - (amount * deduction / 100);
+    //         totalPricetEle.value = currency + totalPrice;
+    //     }
+    // });
 
-    currencyEle.addEventListener('change', function(){
-        currency = this.value;
-        if(isNaN(amount)) {
-            totalPricetEle.value = '';
-        } else {
-            var totalPrice = amount - (amount * deduction / 100);
-            totalPricetEle.value = currency + totalPrice;
-        }
-    });
+    // currencyEle.addEventListener('change', function(){
+    //     currency = this.value;
+    //     if(isNaN(amount)) {
+    //         totalPricetEle.value = '';
+    //     } else {
+    //         var totalPrice = amount - (amount * deduction / 100);
+    //         totalPricetEle.value = currency + totalPrice;
+    //     }
+    // });
 
-    deductionEle.addEventListener('keyup', function(){
-        deduction = this.value;
-        if(isNaN(amount)) {
-            totalPricetEle.value = '';
-        } else {
-            var totalPrice = amount;
-            if (deduction) {
-                totalPrice -= amount * deduction / 100;
-            }
-            totalPricetEle.value = currency + totalPrice;
-        }
-    });
+    // deductionEle.addEventListener('keyup', function(){
+    //     deduction = this.value;
+    //     if(isNaN(amount)) {
+    //         totalPricetEle.value = '';
+    //     } else {
+    //         var totalPrice = amount;
+    //         if (deduction) {
+    //             totalPrice -= amount * deduction / 100;
+    //         }
+    //         totalPricetEle.value = currency + totalPrice;
+    //     }
+    // });
 
     function clientsFunction(e) {
         const id = e.value;
@@ -262,5 +276,8 @@
         }
     }
 
+</script>
+<script>
+    $("#selectUser").select2();
 </script>
 @endsection

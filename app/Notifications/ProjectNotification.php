@@ -7,16 +7,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class projectUpdate extends Notification
+class ProjectNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    private $NotificationContent;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct($NotificationContent)
     {
-        //
+        $this->NotificationContent = $NotificationContent;
     }
 
     /**
@@ -34,11 +35,16 @@ class projectUpdate extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->subject($this->NotificationContent['subject'])
+                    ->line($this->NotificationContent['message'])
+                    ->line($this->NotificationContent['title'])
+                    ->line($this->NotificationContent['url']);
+        
     }
+
+
 
     /**
      * Get the array representation of the notification.

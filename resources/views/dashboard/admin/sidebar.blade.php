@@ -53,18 +53,18 @@
                             <a href="/admin"><i class="icon-home"></i> <span>Dashboard</span></a>
                         </li>
                         {{-- <li class="@if(Request::is('admin') || Request::is('admin/project/*') || Request::is('admin/projects/*') || Request::is('admin/project')) active @endif"> --}}
-                        <li class="@if(Request::is('admin/projects/*') || Request::is('admin/project')) active @endif">
+                        <li class="@if(Request::is('admin/projects/*') || Request::is('admin/project') || Request::is('admin/project/*') ) active @endif">
                             <a href="#projects" class="has-arrow"><i class="fa fa-plane"></i>
                                 <span>Projects</span></a>
                             <ul>
-                                <li class="@if(Request::is('admin/project')) active @endif">
+                                {{-- <li class="@if(Request::is('admin/project')) active @endif">
                                     <a href="{{ route('project.index') }}">
                                         Projects 
                                         <sup class="text-primary">
                                             <b>{{ $ProjectCount }}</b>
                                         </sup>
                                     </a>
-                               </li>
+                               </li> --}}
                                 <li class="@if(Request::is('admin/project/create')) active @endif">
                                     <a href="{{ route('project.create') }}">Add Project</a>
                                 </li>
@@ -186,7 +186,7 @@
                                     <a href="{{ route('admin.client.create') }}">Add Client</a></li>
                             </ul>
                         </li>
-                        <li class="@if(Request::is('admin/notifications/*') || Request::is('admin/notifications')) active @endif">
+                        {{-- <li class="@if(Request::is('admin/notifications/*') || Request::is('admin/notifications')) active @endif">
                             <a href="#notification" class="has-arrow"><i class="icon-bell"></i>
                                 <span>
                                     Notification
@@ -238,7 +238,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> --}}
                         <li class="@if(Request::is('admin/chart/*') || Request::is('admin/chart')) active @endif">
                             <a href="#Chart" class="has-arrow"><i class="icon-bar-chart"></i>
                                 <span>Chart</span></a>
@@ -283,7 +283,7 @@
     </div>
 </div>
 
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
       function updateNotificationCountSidebar() {
         var xhr = new XMLHttpRequest()
@@ -307,4 +307,4 @@
       setInterval(updateNotificationCountSidebar, 5000);
     });
         
-    </script>
+    </script> --}}

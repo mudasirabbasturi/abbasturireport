@@ -10,13 +10,15 @@ use App\Models\NotificationLog;
 use App\Models\UserNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Notifications\ProjectNotification;
-use Illuminate\Support\Facades\Notification;
+use Auth;
+
+
+// use Vonage\Client\Credentials\Basic;
+// use Vonage\Client;
+// use Vonage\SMS\Message\SMS;
 
 use Illuminate\Support\Facades\Queue;
 use App\Jobs\SendProjectNotifications;
-
-use Auth;
 
 
 class ProjectController extends Controller {
@@ -31,11 +33,9 @@ class ProjectController extends Controller {
     /**
      * Show the form for creating a new resource.
      */
-    
     public function create() {
         $clients = DB::table('clients')->get();
-        $users = User::where('type', 0)->get();
-        return view('dashboard.admin.project.create', ['clients' => $clients, 'users' => $users]);
+        return view('dashboard.admin.project.create', ['clients' => $clients]);
     }
 
     public function clients(Request $request, $id) {
@@ -48,39 +48,52 @@ class ProjectController extends Controller {
     /**
      * Store a newly created resource in storage.
      */
+    public function store(Request $request) {
 
-    
-     public function store(Request $request) {
+        $date = $request->input('project_due_date');
         $data = $request->all();
         $data = Project::create($data);
-    
         if ($data) {
             $subject = 'New Project Created';
             $message = 'A new project has been created.';
             $title = $data->project_title;
-            $url = 'report.flprotakeoffs.com/employee/project/' . $data->id;
-    
-            if ($request->has('selected_users')) {
-                $selectedUserIds = $request->input('selected_users');
-                $users = User::whereIn('id', $selectedUserIds)->get();
-    
-                foreach ($users as $user) {
-                    $notificationContent = [
-                        'subject' => $subject,
-                        'message' => $message,
-                        'title' => $title,
-                        'url' => $url,
-                    ];
-                    $user->notify(new ProjectNotification($notificationContent));
-                }
-            }
-    
-            return redirect()->route('admin.index')->with('successMsg', 'Project Created Successfully');
+            $address = $data->project_address;
+            $url = 'https://report.flprotakeoffs.com/type/project/' . $data->id;
+            // ProjectNotification::dispatch($subject, $message, $title, $address, $url)
+            //  ->onQueue('notifications');
+            
+            // $notitle = $data->project_title;
+            // $userId = Auth::user()->id;
 
+            // $notification = new NotificationLog();
+            // $notification->notification_from = Auth::user()->id;
+            // $notification->title = $title;
+            // $notification->message = $message;
+            // $notification->url = $url;
+            // $notification->save();
+    
+            // Retrieve the ID of the newly created notification
+            // $notificationId = $notification->id;
+    
+            // Get the list of users who should receive the notification
+            // $users = User::all();
+    
+            // Create user notifications for each user
+            // foreach ($users as $user) {
+            //     $userNotification = new UserNotification();
+            //     $userNotification->user_id = $user->id;
+            //     $userNotification->notification_id = $notificationId;
+            //     $userNotification->status = 0; // Set the status as unread
+            //     $userNotification->save();
+            // }
+
+            return redirect()->route('admin.index')->with('successMsg', 'Project Created Successfully');
         } 
+
         else {
             return redirect()->back()->with('errorMsg', 'Something went wrong.');
         }
+
     }
 
     /**
@@ -138,8 +151,7 @@ class ProjectController extends Controller {
    public function update(Request $request, Project $project) {
         $upateRecord = $project->update($request->all());
         if($upateRecord) {
-            return redirect()->back()->with('successMsg', 'Project updated successfully');
-            //return redirect()->route('admin.index')->with('successMsg', 'Project updated successfully');
+            return redirect()->route('admin.index')->with('successMsg', 'Project updated successfully');
         }
         else {
             return redirect()->back()->with('errorMsg', 'Something gone wrong please try again.');
@@ -192,46 +204,56 @@ class ProjectController extends Controller {
         }
         $data->save();
        
-        // $notificationEmail = 'mudasirabbas578@gmail.com';
-        // $subject = 'Project Status Updated';
-        // $title = $data->project_title;
-        // $address = $data->project_address;
-        // $url = '';
-        // $url = url('/type/project/' . $data->id);
+        $notificationEmail = 'mudasirabbas578@gmail.com';
+        $subject = 'Project Status Updated';
+        //$bodytext = 'The project status has been updated.';
+        $title = $data->project_title;
+        $address = $data->project_address;
+        $url = '';
+        $url = url('/type/project/' . $data->id);
         $bodytext = 'Project Status changed from "' . $previousStatus . '" to "' . $data->project_status . '".';
+
+        // $job = (new \App\Jobs\SendQueueEmail(
+        //                                       $notificationEmail,
+        //                                       $subject,
+        //                                       $title,
+        //                                       $address,
+        //                                       $bodytext,
+        //                                       $url,
+        //                                     ))
+        //                             ->delay(now()->addSeconds(2)); 
         
-        // $users = User::all();
+        // dispatch($job);
+
+        $notification = new NotificationLog();
+        $notification->notification_from = Auth::user()->id;
+        $notification->title = "The project status has been updated";
+        $notification->message = $bodytext;
+        $notification->url = $url;
+        $notification->save();
+
+        // Retrieve the ID of the newly created notification
+        $notificationId = $notification->id;
+
+        // Get the list of users who should receive the notification
+        $users = User::all();
+
+        // Create user notifications for each user
+        foreach ($users as $user) {
+            $userNotification = new UserNotification();
+            $userNotification->user_id = $user->id;
+            $userNotification->notification_id = $notificationId;
+            $userNotification->status = 0; // Set the status as unread
+            $userNotification->save();
+        }
 
         // Redirect based on the updated project status
         if (isset($statusRoutes[$data->project_status])) {
             $route = $statusRoutes[$data->project_status];
-
-            $subject = 'Project Status Updated';
-            $message = 'Project Status changed from "' . $previousStatus . '" to "' . $data->project_status . '".';
-            $title = $data->project_title;
-            $url = 'report.flprotakeoffs.com/employee/project/' . $data->id;
-    
-            if ($request->has('selected_users')) {
-                $selectedUserIds = $request->input('selected_users');
-                $users = User::whereIn('id', $selectedUserIds)->get();
-    
-                foreach ($users as $user) {
-                    $notificationContent = [
-                        'subject' => $subject,
-                        'message' => $message,
-                        'title' => $title,
-                        'url' => $url,
-                    ];
-                    $user->notify(new ProjectNotification($notificationContent));
-                }
-            }
-
-            // return redirect()->route($route)->with('successMsg', $bodytext);
-            return redirect()->back()->with('successMsg', $bodytext);
+            return redirect()->route($route)->with('successMsg', $bodytext);
         } else {
             return redirect()->back()->with('errorMsg', 'Somethings gone wrong please try again or contact with developer.');
         }
-        
     }
 
     /**
